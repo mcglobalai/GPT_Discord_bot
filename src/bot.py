@@ -119,7 +119,7 @@ def run_discord_bot():
             logger.exception(f"Error while switching to the {choices.value} model: {e}")
 
 
-    @client.tree.command(name="resetAllChannel", description="Complete reset conversation history of all channels")
+    @client.tree.command(name="resetallchannel", description="Complete reset conversation history of all channels")
     async def resetAllChannel(interaction: discord.Interaction):
         if client.chat_model == "OFFICIAL":
             client.chatbot = client.get_chatbot_model()
@@ -171,7 +171,7 @@ def run_discord_bot():
         - `/public` ChatGPT switch to public mode
         - `/replyall` ChatGPT switch between replyAll mode and default mode
         - `/reset` Clear current ChatGPT conversation history
-        - `/resetAllChannel` Clear ChatGPT conversation history of all channels
+        - `/resetallchannel` Clear ChatGPT conversation history of all channels
         - `/chat-model` Switch different chat model
                 `OFFICIAL`: GPT-3.5 model
                 `UNOFFICIAL`: Website ChatGPT
