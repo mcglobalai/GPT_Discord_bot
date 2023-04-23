@@ -56,7 +56,7 @@ class aclient(discord.Client):
         try:
             response = (f'> **{user_message}** - <@{str(author)}' + '> \n\n')
             if self.chat_model == "OFFICIAL":
-                response = f"{response}{await responses.official_handle_response(user_message, self)}"
+                response = f"{response}{await responses.official_handle_response(user_message, message.channel.id, self)}"
             elif self.chat_model == "UNOFFICIAL":
                 response = f"{response}{await responses.unofficial_handle_response(user_message, self)}"
             elif self.chat_model == "Bard":
@@ -131,7 +131,7 @@ class aclient(discord.Client):
                         logger.info(f"Send system prompt with size {len(prompt)}")
                         response = ""
                         if self.chat_model == "OFFICIAL":
-                            response = f"{response}{await responses.official_handle_response(prompt, self)}"
+                            response = f"{response}{await responses.official_handle_response(message=prompt, convo_id=discord_channel_id, client=self)}"
                         elif self.chat_model == "UNOFFICIAL":
                             response = f"{response}{await responses.unofficial_handle_response(prompt, self)}"
                         elif self.chat_model == "Bard":

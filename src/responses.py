@@ -1,8 +1,8 @@
 from src import personas
 from asgiref.sync import sync_to_async
 
-async def official_handle_response(message, client) -> str:
-    return await sync_to_async(client.chatbot.ask)(message)
+async def official_handle_response(message, convo_id, client) -> str:
+    return await sync_to_async(client.chatbot.ask)(prompt=message,convo_id=convo_id)
 
 async def unofficial_handle_response(message, client) -> str:
     async for response in client.chatbot.ask(message):
