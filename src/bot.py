@@ -119,10 +119,26 @@ def run_discord_bot():
             logger.exception(f"Error while switching to the {choices.value} model: {e}")
 
 
-    @client.tree.command(name="reset", description="Complete reset conversation history")
-    async def reset(interaction: discord.Interaction):
+    @client.tree.command(name="resetAllChannel", description="Complete reset conversation history of all channels")
+    async def resetAllChannel(interaction: discord.Interaction):
         if client.chat_model == "OFFICIAL":
             client.chatbot = client.get_chatbot_model()
+        elif client.chat_model == "UNOFFICIAL":
+            client.chatbot.reset_chat()
+            await client.send_start_prompt()
+        elif client.chat_model == "Bard":
+            client.chatbot = client.get_chatbot_model()
+            await client.send_start_prompt()
+        await interaction.response.defer(ephemeral=False)
+        await interaction.followup.send("> **INFO: I have forgotten everything.**")
+        personas.current_persona = "standard"
+        logger.warning(
+            "\x1b[31mChatGPT bot has been successfully reset\x1b[0m")
+
+    @client.tree.command(name="reset", description="Complete reset current conversation history")
+    async def reset(interaction: discord.Interaction):
+        if client.chat_model == "OFFICIAL":
+            client.chatbot.reset(convo_id=interaction.channel.id)
         elif client.chat_model == "UNOFFICIAL":
             client.chatbot.reset_chat()
             await client.send_start_prompt()
@@ -154,7 +170,8 @@ def run_discord_bot():
         - `/private` ChatGPT switch to private mode
         - `/public` ChatGPT switch to public mode
         - `/replyall` ChatGPT switch between replyAll mode and default mode
-        - `/reset` Clear ChatGPT conversation history
+        - `/reset` Clear current ChatGPT conversation history
+        - `/resetAllChannel` Clear ChatGPT conversation history of all channels
         - `/chat-model` Switch different chat model
                 `OFFICIAL`: GPT-3.5 model
                 `UNOFFICIAL`: Website ChatGPT
